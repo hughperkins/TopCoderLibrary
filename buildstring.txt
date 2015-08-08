@@ -1,0 +1,9 @@
+   protected string buildString( int iRepeats, string sCharacter )
+   {
+      string sBuiltString = "";
+      for( int i = 0; i < iRepeats; i++ )
+      {
+         sBuiltString = sBuiltString + sCharacter;
+      }
+      return sBuiltString;
+   }

@@ -1,0 +1,20 @@
+	public int Max( int[]array )
+	{
+		int Max = int.MinValue + 1;
+		foreach( int value in array )
+		{
+			Max = Math.Max( value, Max );
+		}
+		return Max;
+	}
+
+	public int Sum( int[] array )
+	{
+		int Sum = 0;
+		foreach( int value in array )
+		{
+			Sum += value;
+		}
+		return Sum;
+	}
+

@@ -1,0 +1,30 @@
+// Ops: Add(), PushFront(), Pop(), Count
+public class QueueWithFront{
+    public object[] queue;
+    public int iHead; // lowerbound (we pop from head)
+    public int iTail; // upperbound (we add to tail)
+    //           head   tail
+    //     .      X      X      .  
+    public int iAllocated = 1000;
+    public int Count{get{return iTail - iHead + 1;}}
+    public QueueWithFront(){queue = new object[ iAllocated ];iHead = 0;iTail = -1;}
+    public void Add( object item ){
+        if( iTail >= iAllocated - 1 ){
+            int iNewAllocated = ( iAllocated * 3 ) / 2;
+            object[]newqueue = new object[ iNewAllocated ];
+            for( int i = iHead; i <= iTail; i++ ){newqueue[ i ] = queue[ i ];}
+            queue = newqueue; iAllocated = iNewAllocated;
+        }
+        iTail++;queue[ iTail ] = item;
+    }
+    public object Pop(){object item = queue[ iHead ];queue[ iHead ] = null;iHead++;return item;}
+    public void PushFront( object item ){
+        if( iHead - 1 < 0 ){
+            int iShiftAmount = iAllocated / 2; int iNewAllocated = iAllocated + iShiftAmount;
+            object[]newqueue = new object[ iNewAllocated ];
+            for( int i = iHead; i <= iTail; i++ ){newqueue[ i + iShiftAmount ] = queue[ i ];}
+            iAllocated = iNewAllocated;queue = newqueue;iHead += iShiftAmount;iTail += iShiftAmount;
+        }
+        iHead--;queue[ iHead ] = item;
+    }
+}

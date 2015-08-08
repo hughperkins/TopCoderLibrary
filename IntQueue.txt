@@ -1,0 +1,1 @@
+class IntQueue : Queue{public new int Dequeue(){return (int)base.Dequeue();}}

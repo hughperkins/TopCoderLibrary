@@ -1,0 +1,5 @@
+    int ModToRange( int value, int min, int max )
+    {
+        int RangeSize = max - min + 1;
+        return min + ( ( ( value - min ) % RangeSize ) + RangeSize ) % RangeSize;
+    }

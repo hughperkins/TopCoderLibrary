@@ -1,0 +1,14 @@
+public class IntArrayList : ArrayList{
+	public new virtual int this[ int index ]{get{return (int)base[ index ];}set{base[ index ] = value;}}
+	public class IntEnumerator{
+		IEnumerator enumerator;
+		public IntEnumerator( IEnumerator enumerator ){this.enumerator = enumerator;}
+		public int Current{get{return (int)enumerator.Current;}}
+		public void MoveNext(){enumerator.MoveNext();}
+		public void Reset(){enumerator.Reset();}
+	}
+	public new IntEnumerator GetEnumerator()
+	{
+		return new IntEnumerator( base.GetEnumerator() );
+	}
+}

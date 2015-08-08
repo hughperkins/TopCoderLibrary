@@ -1,0 +1,132 @@
+	public Vector2 HexMove( Vector2 thisposition, int iDirection )
+	{
+		bool bShiftColumnUp = ( thisposition.x % 2 ) == 0;
+		Vector2 ArrayDirection = new Vector2();
+		if( bShiftColumnUp )
+		{
+			switch( iDirection )
+			{
+				case 0:
+					ArrayDirection = new Vector2( 0, 1 );
+					break;
+				case 1:
+					ArrayDirection = new Vector2( 1, 1 );
+					break;
+				case 2:
+					ArrayDirection = new Vector2( 1, 0 );
+					break;
+				case 3:
+					ArrayDirection = new Vector2( 0, -1 );
+					break;
+				case 4:
+					ArrayDirection = new Vector2( -1, 0 );
+					break;
+				case 5:
+					ArrayDirection = new Vector2( -1, 1 );
+					break;
+			}
+		}
+		else
+		{
+			switch( iDirection )
+			{
+				case 0:
+					ArrayDirection = new Vector2( 0, 1 );
+					break;
+				case 1:
+					ArrayDirection = new Vector2( 1, 0 );
+					break;
+				case 2:
+					ArrayDirection = new Vector2( 1, -1 );
+					break;
+				case 3:
+					ArrayDirection = new Vector2( 0, -1 );
+					break;
+				case 4:
+					ArrayDirection = new Vector2( -1, -1 );
+					break;
+				case 5:
+					ArrayDirection = new Vector2( -1, 0 );
+					break;
+			}
+		}
+		return thisposition + ArrayDirection;
+	}
+
+	void DumpHexArray( Array hexarray )
+	{
+		for( int i = 0; i < hexarray.GetUpperBound(0) + 1; i++ )
+		{
+			string line = "";
+			if( i % 2 == 0 )
+			{
+				line += " ";
+			}
+			for( int j = 0; j < hexarray.GetUpperBound(1) + 1; j++ )
+			{
+				if( hexarray.GetValue( i, j ).GetType() == typeof( bool ) )
+				{
+					if( (bool)hexarray.GetValue( i, j ) )
+					{
+						line += "# ";
+					}
+					else
+					{
+						line += ". ";
+					}
+				}
+				else
+				{
+					line += hexarray.GetValue( i, j ).ToString() + " ";
+				}
+			}
+			Console.WriteLine( line );
+			//Console.WriteLine("");
+		}
+	}
+
+// dumps link array with each value a mask of direction, from 0 to 5
+	void DumpHexLinks( Array hexarray )
+	{
+		for( int i = 0; i < hexarray.GetUpperBound(0) + 1; i++ )
+		{
+			string line = "";
+			if( i % 2 == 0 )
+			{
+				line += " ";
+			}
+			string sdiagline = line;
+			string shorizline = line;
+			for( int j = 0; j < hexarray.GetUpperBound(1) + 1; j++ )
+			{
+				if( ( (int)hexarray.GetValue(i,j) & ( 1 << 4 ) ) > 0 )
+				{
+					sdiagline += "\\";
+				}
+				else
+				{
+					sdiagline += " ";
+				}
+				if( ( (int)hexarray.GetValue(i,j) & ( 1 << 0 ) ) > 0 )
+				{
+					sdiagline += "_";
+				}
+				else
+				{
+					sdiagline += " ";
+				}
+				if( ( (int)hexarray.GetValue(i,j) & ( 1 << 5 ) ) > 0 )
+				{
+					sdiagline += "/";
+				}
+				else
+				{
+					sdiagline += " ";
+				}
+			}
+			Console.WriteLine( sdiagline );
+			//Console.WriteLine( shorizline );
+			//Console.WriteLine("");
+		}
+	}
+	

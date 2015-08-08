@@ -1,0 +1,9 @@
+	public int Factorial( int target )
+	{
+		int answer = 1;
+		for( int i = 2; i <= target; i++ )
+		{
+			answer *= i;
+		}
+		return answer;
+	}

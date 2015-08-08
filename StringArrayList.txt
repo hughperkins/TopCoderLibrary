@@ -1,0 +1,14 @@
+class StringArrayList : ArrayList{
+	public new virtual string this[ int index ]{get{return (string)base[ index ];}set{base[ index ] = value;}}
+	public class StringEnumerator{
+		IEnumerator enumerator;
+		public StringEnumerator( IEnumerator enumerator ){this.enumerator = enumerator;}
+		public string Current{get{return (string)enumerator.Current;}}
+		public void MoveNext(){enumerator.MoveNext();}
+		public void Reset(){enumerator.Reset();}
+	}
+	public new StringEnumerator GetEnumerator()
+	{
+		return new StringEnumerator( base.GetEnumerator() );
+	}
+}

@@ -1,0 +1,1 @@
+class IntStack : Stack{public new int Pop(){return (int)base.Pop();}}

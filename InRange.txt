@@ -1,0 +1,11 @@
+	public bool InRange( int value, int min, int max )
+	{
+		if( value >= min && value <= max )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}

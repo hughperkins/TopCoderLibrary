@@ -1,0 +1,184 @@
+	public class PriorityQueue
+	{
+		QueueItem[] queue;
+		int iCount;
+		int iTopLevel;
+		int[] levellookup;
+		bool bReverseOrder;
+		
+		const int iMaxLevels = 30;
+		const int iInitialAllocation = 1000;
+		
+		int iAllocated;
+		
+		class QueueItem
+		{
+			public int priority;
+			public object item;
+			public QueueItem( int priority, object item )
+			{
+				this.priority = priority;
+				this.item = item;
+			}
+		}
+		
+		public int Count
+		{
+			get
+			{
+				return iCount;
+			}
+		}
+		
+		public bool Empty()
+		{
+			return( iCount == 0 );
+		}
+		
+		void AllocateQueue()
+		{
+			queue = new QueueItem[ iInitialAllocation ];
+			iAllocated = iInitialAllocation;
+		}
+		
+		void Init()
+		{
+			AllocateQueue();
+			GenerateLevelLookup();
+			iCount = 0;
+			iTopLevel = 0;
+		}
+	
+		public PriorityQueue()
+		{
+			Init();
+		}
+		public PriorityQueue( bool bReverse)
+		{
+			this.bReverseOrder = bReverse;
+			Init();
+		}
+		
+		void GenerateLevelLookup()
+		{
+			levellookup = new int[ iMaxLevels ];
+			int iPos = 0;
+			int ilevelsize = 1;
+			for( int ilevel = 0; ilevel < iMaxLevels; ilevel++ )
+			{
+				levellookup[ilevel] = iPos;
+				iPos += ilevelsize;
+				ilevelsize <<= 1;
+			}
+		}
+
+		public void Add( int priority )
+		{
+			Add( priority, priority );
+		}
+		
+		public void Add( int priority, object newobject )
+		{
+			if( iCount >= iAllocated )
+			{
+				ExtendQueue();
+			}
+			queue[ iCount ] = new QueueItem( priority, newobject );
+			iCount++;
+			if( iCount - 1 == levellookup[ iTopLevel + 1 ] )
+			{
+				iTopLevel++;
+			}
+			TrickleDown( iTopLevel, iCount - 1 );
+		}
+		
+		// assumes iCount correct, since no 'bubble' in the tree
+		void TrickleDown( int iItemLevel, int iItemPos )
+		{
+			if( iItemPos == 0 )
+			{
+				return;
+			}
+			
+			int iChildPos = GetChildPos( iItemLevel, iItemPos );
+			if( queue[ iItemPos ].priority < queue[ iChildPos ].priority )
+			{
+				QueueItem temp = queue[ iItemPos ];
+				queue[ iItemPos ] = queue[ iChildPos ];
+				queue[ iChildPos ] = temp;
+				TrickleDown( iItemLevel - 1, iChildPos );
+			}
+		}
+		
+		int GetChildPos( int iParentItemLevel, int iItemPos )
+		{
+			return levellookup[ iParentItemLevel - 1 ] + ( iItemPos - levellookup[ iParentItemLevel ] ) / 2;
+		}
+		
+		int GetParentOnePos( int iThisItemLevel, int iItemPos )
+		{
+			return levellookup[ iThisItemLevel + 1 ] + ( iItemPos - levellookup[ iThisItemLevel ] ) * 2;
+		}
+		
+		// assumes iCount not decremented yet (we have a 'bubble' in the tree)
+		void BubbleUp( int iLevel, int iItemPos )
+		{
+			int iParentOnePos = GetParentOnePos( iLevel, iItemPos );
+			if( iParentOnePos + 1 < iCount )
+			{
+				if( queue[ iParentOnePos ].priority < queue[ iParentOnePos + 1 ].priority )
+				{
+					queue[ iItemPos ] = queue[ iParentOnePos ];
+					BubbleUp( iLevel + 1, iParentOnePos );
+				}
+				else
+				{
+					queue[ iItemPos ] = queue[ iParentOnePos + 1 ];
+					BubbleUp( iLevel + 1, iParentOnePos + 1 );
+				}
+			}
+			else if( iParentOnePos == iCount - 1 )
+			{
+				queue[ iItemPos ] = queue[ iParentOnePos ];
+				iCount--;
+				if( levellookup[ iTopLevel ] == iCount )
+				{
+					iTopLevel--;
+				}
+			}
+			else
+			{
+				queue[ iItemPos ] = queue[ iCount - 1 ];
+				queue[ iCount - 1 ] = null;
+				iCount--;
+				if( levellookup[ iTopLevel ] == iCount )
+				{
+					iTopLevel--;
+				}
+				if( iItemPos < iCount )
+				{
+					TrickleDown( iLevel, iItemPos );
+				}
+			}
+		}
+		
+		void ExtendQueue()
+		{
+			 int iNewAllocated = ( iAllocated * 3 ) / 2;
+			QueueItem[] newqueue = new QueueItem[ iNewAllocated ];
+			for( int i = 0; i < iCount; i++ )
+			{
+				newqueue[ i ] = queue[i];
+			}
+			queue = newqueue;
+			iAllocated = iNewAllocated;
+		}
+		
+		public object Pop()
+		{
+			QueueItem nextitem = queue[0];			
+			BubbleUp( 0, 0 );			
+			return nextitem.item;
+		}
+	}
+	

@@ -1,0 +1,14 @@
+public class Vector3ArrayList : ArrayList{
+	public new virtual Vector3 this[ int index ]{get{return (Vector3)base[ index ];}set{base[ index ] = value;}}
+	public class Vector3Enumerator{
+		IEnumerator enumerator;
+		public Vector3Enumerator( IEnumerator enumerator ){this.enumerator = enumerator;}
+		public Vector3 Current{get{return (Vector3)enumerator.Current;}}
+		public void MoveNext(){enumerator.MoveNext();}
+		public void Reset(){enumerator.Reset();}
+	}
+	public new Vector3Enumerator GetEnumerator()
+	{
+		return new Vector3Enumerator( base.GetEnumerator() );
+	}
+}

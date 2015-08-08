@@ -1,0 +1,16 @@
+public class Vector3{
+	public double x;public double y;public double z;
+	public Vector3(){} public Vector3( Vector3 orig ){x = orig.x;y = orig.y;z = orig.z;}
+	public Vector3( double x, double y, double z ) {this.x = x;this.y = y;this.z=z;}
+	static public Vector3 operator+( Vector3 first, Vector3 second ){return new Vector3( first.x + second.x, first.y + second.y, first.z + second.z );}
+	static public Vector3 operator-( Vector3 first, Vector3 second ){
+		return new Vector3( first.x - second.x, first.y - second.y, first.z - second.z );
+	}
+	public override String ToString(){	return "<" + x.ToString() + "," + y.ToString() + "," + z.ToString() + ">";}
+	public override bool Equals( object two ){return ((Vector3)two).x == this.x && ((Vector3)two).y == this.y && ((Vector3)two).z == this.z;}
+	static public bool operator==( Vector3 first, Vector3 second )	{return first.x == second.x && first.y == second.y && first.z == second.z;	}
+	static public bool operator!=( Vector3 first, Vector3 second ){return first.x != second.x || first.y != second.y || first.z != second.z;}
+	static public double DistanceSquared( Vector3 one, Vector3 two ){
+		return ( one.x - two.x ) * ( one.x - two.x ) + ( one.y - two.y ) * ( one.y - two.y ) + ( one.z - two.z ) * ( one.z - two.z );
+	}
+}

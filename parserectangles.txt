@@ -1,0 +1,17 @@
+		Harmful = new bool[ iMax + 1, iMax + 1 ];
+		
+		foreach( string rectanglestring in harmful )
+		{
+			string[]rectangleparams = rectanglestring.Split( new char[]{' '} );
+			int rectangleleft = Convert.ToInt32( rectangleparams[0] );
+			int rectangletop = Convert.ToInt32( rectangleparams[1] );
+			int rectangleright = Convert.ToInt32( rectangleparams[2] );
+			int rectanglebottom = Convert.ToInt32( rectangleparams[3] );
+			for( int i = Math.Min( rectangleleft, rectangleright ); i <= Math.Max( rectangleleft, rectangleright ); i++ )
+			{
+				for( int j = Math.Min( rectanglebottom, rectangletop ); j <= Math.Max( rectanglebottom, rectangletop ); j++ )
+				{
+					Harmful[ i, j ] = true;
+				}
+			}
+		}
